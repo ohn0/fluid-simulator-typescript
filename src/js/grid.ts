@@ -25,6 +25,17 @@ export default class Grid {
         }
     }
 
+    public addDensity(densities: any[]): void {
+        var i: number;
+        var j: number;
+
+        for(i = 0; i < this.cellsRowCount; i++){
+            for(j = 0; j < this.cellsColCount; j++){
+                this.cells[i][j] += densities[i][j];
+            }
+        }
+    }
+
     public assignRandomColors():void {
         var randomColor:string;
         var i: number;
@@ -66,4 +77,18 @@ export default class Grid {
             }
         }
     }
+
+    get cellRows():number {
+        return this.cellsRowCount;
+    }
+
+    get cellCols():number {
+        return this.cellsColCount;
+    }
+
+    get cellGrid(): [] {
+        return this.cells;
+    }
+
+
 }
