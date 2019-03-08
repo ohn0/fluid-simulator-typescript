@@ -174,7 +174,7 @@ eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\ncl
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst grid_1 = __webpack_require__(/*! ./grid */ \"./src/js/grid.ts\");\r\nclass Game {\r\n    constructor(cellSize) {\r\n        this.canvas = document.getElementById('canvas');\r\n        this.canvas.width = 1000;\r\n        this.canvas.height = 1000;\r\n        this.cellSize = cellSize;\r\n        this.ctx = this.canvas.getContext(\"2d\");\r\n        this.grid = new grid_1.default(this.canvas.width, this.canvas.height, this.cellSize);\r\n        this.grid.assignSingleColor();\r\n        this.grid.updateCellColors(this.ctx);\r\n        console.log(this.grid);\r\n    }\r\n    render() {\r\n        this.ctx.strokeStyle = \"#000000\";\r\n        this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);\r\n        this.grid.updateCellColors(this.ctx);\r\n    }\r\n    addSources(densities) {\r\n    }\r\n}\r\nexports.default = Game;\r\n\n\n//# sourceURL=webpack:///./src/js/game.ts?");
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst simulator_1 = __webpack_require__(/*! ./simulator */ \"./src/js/simulator.ts\");\r\nclass Game {\r\n    constructor(cellSize) {\r\n        this.canvas = document.getElementById('canvas');\r\n        this.canvas.width = 1000;\r\n        this.canvas.height = 1000;\r\n        this.cellSize = cellSize;\r\n        this.ctx = this.canvas.getContext(\"2d\");\r\n        this.simulator = new simulator_1.default(this.cellSize, this.ctx, this.canvas);\r\n    }\r\n    render() {\r\n        // this.ctx.strokeStyle = \"#000000\";\r\n        // this.ctx.strokeRect(0,0, this.canvas.width, this.canvas.height);\r\n        // this.grid.updateCellColors(this.ctx);\r\n        this.simulator.update();\r\n    }\r\n}\r\nexports.default = Game;\r\n\n\n//# sourceURL=webpack:///./src/js/game.ts?");
 
 /***/ }),
 
@@ -187,6 +187,18 @@ eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nco
 
 "use strict";
 eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst cell_1 = __webpack_require__(/*! ./cell */ \"./src/js/cell.ts\");\r\nclass Grid {\r\n    constructor(width, height, cellSize) {\r\n        this.cells = [];\r\n        var i;\r\n        // console.log(height/cellSize);\r\n        // console.log(width/cellSize);\r\n        // console.log(\"Original Height: \" + height);\r\n        // console.log(\"Original Width:\" + width);\r\n        var singleCellWidth = width / cellSize;\r\n        var singleCellHeight = height / cellSize;\r\n        this.cellsRowCount = singleCellHeight;\r\n        this.cellsColCount = singleCellWidth;\r\n        for (i = 0; i < (1 + (singleCellHeight)); i++) {\r\n            this.cells[i] = [];\r\n            var j;\r\n            for (j = 0; j < (1 + (singleCellWidth)); j++) {\r\n                this.cells[i][j] = new cell_1.default(i * cellSize, j * cellSize, cellSize, cellSize);\r\n            }\r\n        }\r\n    }\r\n    assignRandomColors() {\r\n        var randomColor;\r\n        var i;\r\n        var j;\r\n        for (i = 0; i < this.cellsRowCount; i++) {\r\n            for (j = 0; j < this.cellsColCount; j++) {\r\n                randomColor = Math.floor(Math.random() * 16777215).toString(16);\r\n                this.cells[i][j].color = \"#\" + randomColor;\r\n            }\r\n        }\r\n    }\r\n    assignSingleColor() {\r\n        var white = \"#FFFFFF\";\r\n        var black = \"#000000\";\r\n        var i;\r\n        var j;\r\n        for (i = 0; i < this.cellsRowCount; i++) {\r\n            for (j = 0; j < this.cellsColCount; j++) {\r\n                this.cells[i][j].color = Math.random() > .5 ? white : black;\r\n            }\r\n        }\r\n    }\r\n    updateCellColors(ctx) {\r\n        var i;\r\n        var j;\r\n        var cell;\r\n        for (i = 0; i < this.cellsRowCount; i++) {\r\n            for (j = 0; j < this.cellsColCount; j++) {\r\n                cell = this.cells[i][j];\r\n                ctx.fillStyle = cell.color;\r\n                ctx.fillRect(cell.xLoc, cell.yLoc, cell.xLoc + cell.width, cell.yLoc + cell.height);\r\n            }\r\n        }\r\n    }\r\n}\r\nexports.default = Grid;\r\n\n\n//# sourceURL=webpack:///./src/js/grid.ts?");
+
+/***/ }),
+
+/***/ "./src/js/simulator.ts":
+/*!*****************************!*\
+  !*** ./src/js/simulator.ts ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst grid_1 = __webpack_require__(/*! ./grid */ \"./src/js/grid.ts\");\r\nclass Simulator {\r\n    constructor(cellSize, ctx, canvas) {\r\n        this.ctx = ctx;\r\n        this.cellSize = cellSize;\r\n        this.grid = new grid_1.default(canvas.width, canvas.height, this.cellSize);\r\n        this.grid.assignSingleColor();\r\n        this.grid.updateCellColors(this.ctx);\r\n    }\r\n    update() {\r\n        this.grid.updateCellColors(this.ctx);\r\n    }\r\n    addDensitySources(densities) {\r\n    }\r\n}\r\nexports.default = Simulator;\r\n\n\n//# sourceURL=webpack:///./src/js/simulator.ts?");
 
 /***/ })
 
